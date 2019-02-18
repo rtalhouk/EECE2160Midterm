@@ -3,6 +3,9 @@
 
 #include "Joint.h"
 
+/* PoseManager class contains five Joint objects running on different threads
+*  so all five joints can be manipulated through one PoseManager object
+*/
 class PoseManager {
 
 private:

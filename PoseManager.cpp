@@ -4,8 +4,10 @@
 
 using namespace std;
 
+/* Class constructor that creates five Joint objects for each of the five
+*  servos of the robotic arm
+*/
 PoseManager::PoseManager() {
-  // Initializes five joints to a straight up position
 
   cout << "Pre init" << endl;
   base = new Joint(13);
@@ -15,7 +17,8 @@ PoseManager::PoseManager() {
   gripper = new Joint(0);
 
 cout << "Pre moveto" << endl;
-
+//Sets the target_pulse and transition_periods so the arm initializes in
+//the straight up position
 	base->MoveTo(90, 0);
 	bicep->MoveTo(90, 0);
 	elbow->MoveTo(90, 0);
@@ -31,6 +34,8 @@ cout << "Pre start" << endl;
   gripper->Start();
 }
 
+//The below five functions edit the target_pulse and transition_periods
+//of single joints only
 void PoseManager::JustBase(int deg, int dur) { base->MoveTo(deg, dur);}
 
 void PoseManager::JustBicep(int deg, int dur) { bicep->MoveTo(deg, dur);}
@@ -41,6 +46,8 @@ void PoseManager::JustWrist(int deg, int dur) { wrist->MoveTo(deg, dur);}
 
 void PoseManager::JustGripper(int deg, int dur) { gripper->MoveTo(deg, dur);}
 
+//Directs the robotic arm to a pose. because each joint object runs on a single
+//thread, these functions run in parallel and multiple servos move together
 void PoseManager::MakePose(int *degs, int *durs) {
 
   JustBase(degs[0], durs[0]);
@@ -50,8 +57,8 @@ void PoseManager::MakePose(int *degs, int *durs) {
   JustGripper(degs[4], durs[4]);
 }
 
+//Class destructor frees the memory associated with the joint objects
 PoseManager::~PoseManager() {
-
   delete base;
   delete bicep;
   delete elbow;
